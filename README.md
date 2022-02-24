@@ -1,0 +1,5 @@
+- 👋 Hi, I’m @Ligindo
+- 👀 Currently I’m interested in working with API using Python
+- 🌱 I’m currently learning Python basics
+- 📫 How to reach me 
+- Twitter @ligind0
