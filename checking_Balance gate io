@@ -1,0 +1,33 @@
+import time
+import hashlib
+import hmac
+import requests
+import json
+
+def gen_sign(method, url, query_string=None, payload_string=None): #def это метод
+    key = '' #api key 
+    secret = '' #api_secret
+    t = time.time()
+    m = hashlib.sha512()       #дальше процесс входа
+    m.update((payload_string or "").encode('utf-8'))
+    hashed_payload = m.hexdigest()
+    s = '%s\n%s\n%s\n%s\n%s' % (method, url, query_string or "", hashed_payload, t)
+    sign = hmac.new(secret.encode('utf-8'), s.encode('utf-8'), hashlib.sha512).hexdigest()
+    return {'KEY': key, 'Timestamp': str(t), 'SIGN': sign}
+def Total_Balance(host,headers,prefix): 
+    url = '/wallet/total_balance'
+    query_param = ''
+    # for `gen_sign` implementation, refer to section `Authentication` above
+    sign_headers = gen_sign('GET', prefix + url, query_param)
+    headers.update(sign_headers)
+    r = requests.request('GET', host + prefix + url, headers=headers)
+    r= r.json()
+    print(r)
+    print(r.get('total'))
+if __name__ == "__main__":
+    host = "https://api.gateio.ws"
+    prefix = "/api/v4"
+    headers = {'Accept': 'application/json', 'Content-Type': 'application/json')
+    Total_Balance(host,headers,prefix) #Объявление метода тотал баланс переменные уходят в метод
+    
+    #powered by gate.io
